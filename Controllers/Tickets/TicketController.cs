@@ -33,28 +33,101 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
-        [HttpGet("{id}")]
-        public string Get([Required] Guid id)
+        /// <summary>
+        /// Get detail of a ticket from database
+        /// </summary>
+        /// <param name="accesstoken">User access token</param>
+        /// <param name="id">Guid of the ticket</param>
+        /// <returns></returns>
+        [HttpGet]
+        public Ticket GetTicket([Required] [FromHeader] string accesstoken, [Required] [FromQuery] Guid id)
         {
-            return "value";
+            // TODO: implement access token
+
+            try
+            {
+                return new Ticket().GetTicketDetail(id);
+            }
+            catch (Exception err)
+            {
+                throw;
+            }
         }
 
-        // POST api/<TicketController>
+        /// <summary>
+        /// Create new ticket for a project to database
+        /// </summary>
+        /// <param name="accesstoken">User access token</param>
+        /// <param name="ticket">Ticket information to be added</param>
+        /// <param name="projectGuid">Guid of the project to associate</param>
+        /// <returns></returns>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public HttpResponseMessage CreateTicket([Required] [FromHeader] string accesstoken, [FromBody] Ticket ticket, [FromQuery] Guid projectGuid)
         {
+            // TODO: Implement acces token method
+
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+            try
+            {
+                new Ticket().CreateTicket(ticket, projectGuid);
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.Created;
+            }
+            catch (Exception err)
+            {
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                httpResponseMessage.ReasonPhrase = err.Message;
+            }
+            return httpResponseMessage;
         }
 
-        // PUT api/<TicketController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        /// <summary>
+        /// Update the informaton of a ticket from the database with a new ticket information
+        /// </summary>
+        /// <param name="accesstoken">User access token</param>
+        /// <param name="ticket">New ticket information</param>
+        /// <returns></returns>
+        [HttpPut]
+        public HttpResponseMessage UpdateTicket([FromHeader] string accesstoken, [FromBody] Ticket ticket)
         {
+            // TODO: Implement acces token method
+
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+            try
+            {
+                new Ticket().UpdateTicket(ticket);
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+            }
+            catch (Exception err)
+            {
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                httpResponseMessage.ReasonPhrase = err.Message;
+            }
+
+            return httpResponseMessage;
         }
 
-        // DELETE api/<TicketController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Delete a ticket from database
+        /// </summary>
+        /// <param name="accesstoken"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public HttpResponseMessage Delete([FromHeader] string accesstoken, [FromQuery] Guid id)
         {
+            HttpResponseMessage httpsResponseMessage = new HttpResponseMessage();
+            try
+            {
+                new Ticket().DeleteTicket(id);
+                httpsResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+            }
+            catch (Exception err)
+            {
+                httpsResponseMessage.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                httpsResponseMessage.ReasonPhrase = err.Message;
+            }
+
+            return httpsResponseMessage;
         }
     }
 }

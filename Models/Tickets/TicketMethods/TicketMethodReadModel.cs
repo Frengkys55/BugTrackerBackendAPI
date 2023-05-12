@@ -10,11 +10,11 @@ namespace BugTrackerBackendAPI.Models
             {
                 Id = new Random().Next(0, 100),
                 Guid = Guid.NewGuid(),
-                Title = "Implement GetTicketListMethod (" + i + ")",
+                Title = "Implement GetTicketListMethod (" + new Random().Next(0, 100) + ")",
                 Description = "This method is still using sample content",
                 Project = new Project()
                 {
-                    Name = "Replace this placeholder text (" + i + ")",
+                    Name = "Replace this placeholder text (" + new Random().Next(0, 100) + ")",
                 },
                 Comments = null,
                 DateCreated = DateTime.Now,
