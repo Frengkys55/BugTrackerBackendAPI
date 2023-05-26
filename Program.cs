@@ -1,4 +1,7 @@
 
+using Microsoft.OpenApi.Services;
+using System.Reflection.Metadata;
+
 namespace BugTrackerBackendAPI
 {
     public class Program
@@ -34,11 +37,11 @@ namespace BugTrackerBackendAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.DocumentTitle = "BugTracker BackEnd API";
-                    options.ConfigObject.DefaultModelExpandDepth = -1;
-                    options.ConfigObject.ShowExtensions = false;
-                    options.ConfigObject.TryItOutEnabled = false;
-                    options.ConfigObject.ShowCommonExtensions = false;
+                    options.DocumentTitle = "BugTracker Backend API";
+                    //options.DefaultModelsExpandDepth(-1);
+                    //options.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+                    //options.SupportedSubmitMethods(new Swashbuckle.AspNetCore.SwaggerUI.SubmitMethod[0]);
+                    options.EnableDeepLinking();
                 });
             }
 
