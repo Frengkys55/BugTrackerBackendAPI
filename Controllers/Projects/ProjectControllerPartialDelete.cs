@@ -8,21 +8,17 @@ namespace BugTrackerBackendAPI.Controllers.Projects
     {
         // DELETE api/<ProjectController>/5
         [HttpDelete("{id}")]
-        public HttpResponseMessage Delete([FromHeader] string accesstoken, Guid id)
+        public IActionResult Delete([FromHeader] string accesstoken, Guid id)
         {
-            HttpResponseMessage response = new HttpResponseMessage();
-            response.StatusCode = System.Net.HttpStatusCode.Gone;
-
             try
             {
-                new Project().DeleteProject(id, accesstoken);
+                new Project().DeleteProject(id, accesstoken, _configuration.GetConnectionString("Default"));
             }
             catch (Exception err)
             {
-                response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-                response.ReasonPhrase = err.Message;
+                return BadRequest(err.Message);
             }
-            return response;
+            return NoContent();
         }
     }
 }

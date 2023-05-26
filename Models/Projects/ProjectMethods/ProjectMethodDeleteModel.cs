@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.OpenApi.Writers;
 using System.Collections.ObjectModel;
+using System.Runtime.ExceptionServices;
 
 namespace BugTrackerBackendAPI.Models
 {
@@ -12,10 +13,8 @@ namespace BugTrackerBackendAPI.Models
         /// <param name="guid">Guid of the project to delete</param>
         /// <param name="accesstoken">Access token to use</param>
         /// <exception cref="NotImplementedException"></exception>
-        public void DeleteProject(Guid guid, string accesstoken)
+        public void DeleteProject(Guid guid, string accesstoken, string connectionString)
         {
-            string connectionString = "Data Source=ASUS\\MYDB;Initial Catalog=BugTracker_Demo;Integrated Security=True; TrustServerCertificate=True";
-
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             string command = "DeleteProject";
@@ -28,6 +27,14 @@ namespace BugTrackerBackendAPI.Models
             try
             {
                 int result = com.ExecuteNonQuery();
+                if(result == -1)
+                {
+                    throw new Exception("Fail to delete the project. Did you mess up with something?");
+                }
+            }
+            catch (SqlException err)
+            {
+                ExceptionDispatchInfo.Capture(err).Throw();
             }
             catch (Exception err)
             {

@@ -7,9 +7,17 @@
         /// </summary>
         /// <param name="project">Information about the rpoject to be created</param>
         /// <exception cref="NotImplementedException"></exception>
-        public void CreateProject(Project project, Guid userGuid)
+        public void CreateProject(Project project, string connectionString)
         {
-            throw new NotImplementedException();
+            if (project == null) throw new ArgumentNullException(nameof(project));
+            else project.accesstoken = accesstoken;
+            if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
+
+
+            Data.DbHelper.GenericWrite<Project> writeProject = new Data.DbHelper.GenericWrite<Project>();
+            List<string> ignoredProperties = new List<string>();
+            ignoredProperties.Add("Id");
+            int resul = writeProject.WriteUsingProcedure(connectionString, "AddProject", project, ignoredProperties);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -45,11 +46,20 @@ namespace BugTrackerBackendAPI.Data.DbHelper
                             {
                                 value = null;
                             }
-                            info[i].SetValue(obj, value);
+                            // Specialized convertion
+                            string propertyTypeName = info[i].PropertyType.Name;
+                            if (propertyTypeName == "Guid")
+                            {
+                                info[i].SetValue(obj, Guid.Parse(value as string));
+                            }
+                            else
+                            {
+                                info[i].SetValue(obj, value);
+                            }
                         }
                         data.Add((T)obj);
                     }
-                }
+                }   
             }
             catch (Exception err)
             {

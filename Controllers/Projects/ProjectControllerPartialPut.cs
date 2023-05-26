@@ -1,6 +1,7 @@
 ﻿using BugTrackerBackendAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Http.Results;
 
 namespace BugTrackerBackendAPI.Controllers.Projects
 {
@@ -11,7 +12,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         /// </summary>
         /// <param name="project">New information about the project to be updated</param>
         /// <returns></returns>
-        [HttpPut("Update")]
+        [HttpPut]
         public HttpResponseMessage UpdateProjectInformation([FromHeader] string accesstoken, [FromBody] Project project)
         {
             HttpResponseMessage response = new HttpResponseMessage();
@@ -36,23 +37,29 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         /// <param name="project">The information about the project to be created</param>
         /// <returns></returns> 
         /// <exception cref="NotImplementedException"></exception>
-        [HttpPut("Create")]
-        public HttpResponseMessage CreateNewProject([FromHeader] string accesstoken, [Required][FromBody] Project project)
+        [HttpPost]
+        public IActionResult CreateNewProject([Required][FromBody] Project project)
         {
             HttpResponseMessage response = new HttpResponseMessage();
             response.StatusCode = System.Net.HttpStatusCode.Gone;
 
             try
             {
-                project.CreateProject(project, Guid.NewGuid());
+                // Replace guid that was received from user
+                project.Guid = Guid.NewGuid();
+                project.CreateProject(project, _configuration.GetConnectionString("Default"));
                 response.StatusCode = System.Net.HttpStatusCode.Created;
+                response.ReasonPhrase = "Hei! It's created!";
             }
             catch (Exception err)
             {
                 response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 response.ReasonPhrase = err.Message;
+                HttpRequestMessage message = new HttpRequestMessage();
+                message.CreateErrorResponse(System.Net.HttpStatusCode.InternalServerError, err.Message);
+                return BadRequest(response);
             }
-            return response;
+            return new CreatedResult(nameof(CreateNewProject), response);
         }
     }
 }

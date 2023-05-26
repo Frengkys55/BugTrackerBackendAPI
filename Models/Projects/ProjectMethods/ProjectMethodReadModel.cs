@@ -11,7 +11,7 @@ namespace BugTrackerBackendAPI.Models
         /// <param name="guid">Guid of the specified project</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Project GetProject(Guid guid)
+        public Project GetProject(Guid guid, string accesstoken)
         {
             Project project = new Project
             {
@@ -21,8 +21,8 @@ namespace BugTrackerBackendAPI.Models
                 DateModified = DateTime.Now,
                 Description = "Replace this placeholder text with the real one",
                 Id = 1,
-                ProjectIconUrl = "https://www.frengkysinaga.com/Sources/Images/collei_honkaipose.png",
-                ProjectBackgroundImageUrl = "https://www.frengkysinaga.com/Sources/Background/Collei.jpg"
+                IconUrl = "https://www.frengkysinaga.com/Sources/Images/collei_honkaipose.png",
+                BackGroundImageUrl = "https://www.frengkysinaga.com/Sources/Background/Collei.jpg"
             };
             return project;
         }

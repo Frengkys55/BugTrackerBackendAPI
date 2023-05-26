@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using NSwag.Annotations;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
 
 namespace BugTrackerBackendAPI.Models
 {
@@ -17,14 +20,18 @@ namespace BugTrackerBackendAPI.Models
 
         public string? Description { set; get; }
 
-        public string? ProjectIconUrl { set; get; }
-        public string? ProjectBackgroundImageUrl { set; get; }
+        public string? IconUrl { set; get; }
+        public string? BackGroundImageUrl { set; get; }
 
         [Required]
         public DateTime DateCreated { set; get; }
 
         [Required]
         public DateTime DateModified { set; get; }
+
+        public string? ProjectStatus { set; get; }
+
+        public string? accesstoken { set; get; }
 
         [Required]
         internal User? User { set; get; }

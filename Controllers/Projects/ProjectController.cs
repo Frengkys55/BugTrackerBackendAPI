@@ -14,6 +14,13 @@ namespace BugTrackerBackendAPI.Controllers.Projects
     [ApiController]
     public partial class ProjectController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+
+        public ProjectController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
 
         /// <summary>
         /// Get all available project for specific user
@@ -26,11 +33,9 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         {
             // TODO: Implmenent access token
 
-            Guid userGuid = Guid.NewGuid();
-
             try
             {
-                return new Project().GetProjectsList(userGuid);
+                return new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default"));
             }
             catch (Exception err)
             {
@@ -48,7 +53,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
 
             try
             {
-                return project.GetProject(id);
+                return project.GetProject(id, accesstoken);
             }
             catch (Exception err)
             {
