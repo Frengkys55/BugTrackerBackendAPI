@@ -5,16 +5,18 @@ using Microsoft.AspNetCore.Cors;
 using System.Text;
 using System.Collections.ObjectModel;
 using Azure.Core;
+using System.Web.Http.Results;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BugTrackerBackendAPI.Controllers.Projects
 {
+    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public partial class ProjectController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private IConfiguration _configuration;
 
         public ProjectController(IConfiguration configuration)
         {
@@ -27,25 +29,25 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         /// </summary>
         /// <param name="accesstoken">Logged in user access token information</param>
         /// <returns></returns>
-        // GET: api/<ProjectController>
         [HttpGet("GetProjects")]
-        public IEnumerable<ShortProjectInfo> GetAllProjects([FromHeader] string accesstoken)
+        public IActionResult GetAllProjects([FromHeader] string accesstoken)
         {
             // TODO: Implmenent access token
-
+            HttpRequestMessage message = new HttpRequestMessage();
             try
             {
-                return new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default"));
+                List<ShortProjectInfo> projects = new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default")).ToList();
+                return Ok(projects);
             }
             catch (Exception err)
             {
-                throw;
+                return BadRequest(err.Message);
             }
         }
 
         // GET api/<ProjectController>/5
         [HttpGet("{id}")]
-        public Project GetProjectDetail([FromHeader] string accesstoken, [Required] Guid id)
+        public IActionResult GetProjectDetail([FromHeader] string accesstoken, [Required] Guid id)
         {
             // TODO: implement access token
 
@@ -53,16 +55,13 @@ namespace BugTrackerBackendAPI.Controllers.Projects
 
             try
             {
-                return project.GetProject(id, accesstoken);
+                string connectionString = _configuration.GetConnectionString("Default");
+                return Ok(project.GetProject(id, accesstoken, connectionString));
             }
             catch (Exception err)
             {
-                throw;
+                return BadRequest(err.Message);
             }
         }
-
-        
-
-        
     }
 }

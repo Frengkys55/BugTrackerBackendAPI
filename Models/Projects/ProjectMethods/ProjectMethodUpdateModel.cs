@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Writers;
+﻿using BugTrackerBackendAPI.Data.DbHelper;
+using Microsoft.OpenApi.Writers;
 using System.Collections.ObjectModel;
 
 namespace BugTrackerBackendAPI.Models
@@ -12,9 +13,16 @@ namespace BugTrackerBackendAPI.Models
         /// <param name="project">Infomration about the project to be updated</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public void UpdateProject(Project project)
+        public void UpdateProject(Project project, string connectionString)
         {
-            throw new NotImplementedException();
+            GenericWrite<Project> genericWrite = new GenericWrite<Project>();
+            List<string> ignoreList = new List<string>
+            {
+                "Id",
+                "DateModified",
+                "DateCreated",
+            };
+            genericWrite.WriteUsingProcedure(connectionString, "EditProject", project, ignoreList);
         }
     }
 

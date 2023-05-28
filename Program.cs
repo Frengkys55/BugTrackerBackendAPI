@@ -10,23 +10,26 @@ namespace BugTrackerBackendAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             // Add services to the container.
+
+            // Configure CORS
+            string corsPolicyName = "AllowAllOrigins";
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy(name: corsPolicyName,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Configure CORS
-            string corsPolicyName = "_allowAllOrigins";
-            builder.Services.AddCors(option =>
-            {
-                option.AddPolicy(name: corsPolicyName,
-                    policy =>
-                    {
-                        policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-                    });
-            });
+            
 
 
             var app = builder.Build();

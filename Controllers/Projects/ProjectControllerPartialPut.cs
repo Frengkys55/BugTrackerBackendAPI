@@ -13,21 +13,21 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         /// <param name="project">New information about the project to be updated</param>
         /// <returns></returns>
         [HttpPut]
-        public HttpResponseMessage UpdateProjectInformation([FromHeader] string accesstoken, [FromBody] Project project)
+        public IActionResult UpdateProjectInformation([FromBody] Project project)
         {
             HttpResponseMessage response = new HttpResponseMessage();
-            response.StatusCode = System.Net.HttpStatusCode.Gone;
 
             try
             {
-                project.UpdateProject(project);
+                string connectionString = _configuration.GetConnectionString("Default");
+                project.UpdateProject(project, connectionString);
+                response.StatusCode = System.Net.HttpStatusCode.OK;
             }
             catch (Exception err)
             {
-                response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-                response.ReasonPhrase = err.Message;
+                return StatusCode(500, err.Message);
             }
-            return response;
+            return Ok();
         }
 
         /// <summary>

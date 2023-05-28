@@ -13,5 +13,8 @@ namespace BugTrackerBackendAPI.Models
 
         [Required]
         public string? Name { get; set; }
+
+        public string? IconUrl { get; set; }
+        public string? BackgroundImageUrl { get; set; }
     }
 }
