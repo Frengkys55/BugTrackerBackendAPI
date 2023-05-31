@@ -21,7 +21,7 @@ namespace BugTrackerBackendAPI.Models
         public string? Description { set; get; }
 
         public string? IconUrl { set; get; }
-        public string? BackGroundImageUrl { set; get; }
+        public string? BackgroundImageUrl { set; get; }
 
         [Required]
         public DateTime DateCreated { set; get; }

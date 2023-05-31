@@ -22,7 +22,10 @@ namespace BugTrackerBackendAPI.Models
                 "DateModified",
                 "DateCreated",
             };
-            genericWrite.WriteUsingProcedure(connectionString, "EditProject", project, ignoreList);
+            if (genericWrite.WriteUsingProcedure(connectionString, "EditProject", project, ignoreList) != 1)
+            {
+                throw new Exception("Fail to update project");
+            } 
         }
     }
 

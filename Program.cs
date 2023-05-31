@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.OpenApi.Services;
 using System.Reflection.Metadata;
 
@@ -15,22 +16,19 @@ namespace BugTrackerBackendAPI
 
             // Configure CORS
             string corsPolicyName = "AllowAllOrigins";
-            builder.Services.AddCors(option =>
-            {
-                option.AddPolicy(name: corsPolicyName,
-                    policy =>
-                    {
-                        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                    });
-            });
+
+
+            builder.Services.AddCors(o => o.AddPolicy("AllowAllOrigins",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                             .AllowAnyMethod()
+                                             .AllowAnyHeader();
+                                  }));
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            
-
 
             var app = builder.Build();
 
@@ -50,9 +48,7 @@ namespace BugTrackerBackendAPI
 
             app.UseHttpsRedirection();
             app.UseCors(corsPolicyName);
-
             app.UseAuthorization();
-
             app.MapControllers();
 
             app.Run();

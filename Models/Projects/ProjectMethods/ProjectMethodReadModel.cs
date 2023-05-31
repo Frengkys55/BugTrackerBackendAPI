@@ -16,7 +16,14 @@ namespace BugTrackerBackendAPI.Models
         public Project GetProject(Guid guid, string accesstoken, string connectionString)
         {
             Data.DbHelper.GenericRead<Project> readProject = new Data.DbHelper.GenericRead<Project>();
-            return readProject.Read("SELECT * FROM GetProjectDetail('" + guid + "', '" + accesstoken + "')", connectionString).ToList()[0];
+            try
+            {
+                return readProject.Read("SELECT * FROM GetProjectDetail('" + guid + "', '" + accesstoken + "')", connectionString).ToList()[0];
+            }
+            catch (Exception)
+            {
+                throw; 
+            }
         }
     }
 

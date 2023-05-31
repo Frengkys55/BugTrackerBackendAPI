@@ -15,8 +15,12 @@
 
 
             Data.DbHelper.GenericWrite<Project> writeProject = new Data.DbHelper.GenericWrite<Project>();
-            List<string> ignoredProperties = new List<string>();
-            ignoredProperties.Add("Id");
+            List<string> ignoredProperties = new List<string>
+            {
+                "Id",
+                "DateCreated",
+                "DateModified",
+            };
             int resul = writeProject.WriteUsingProcedure(connectionString, "AddProject", project, ignoredProperties);
         }
     }

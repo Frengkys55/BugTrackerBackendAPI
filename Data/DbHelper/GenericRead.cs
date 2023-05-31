@@ -24,44 +24,51 @@ namespace BugTrackerBackendAPI.Data.DbHelper
             {
                 if (reader != null)
                 {
-                    while (reader.Read())
+                    if (reader.HasRows)
                     {
-                        // Get field count
-                        int fieldCount = reader.FieldCount;
-
-                        object obj = Activator.CreateInstance(typeof(T));   // Create new instance of T
-                        Type type = obj.GetType();                          // Get the type of T
-                        PropertyInfo[] info = type.GetProperties();         // Get all public properties of T
-
-                        // Set value to all properties
-                        for (int i = 0; i < info.Length; i++)
+                        while (reader.Read())
                         {
-                            string fieldName = info[i].Name;
-                            object? value = null;
-                            try
+                            // Get field count
+                            int fieldCount = reader.FieldCount;
+
+                            object obj = Activator.CreateInstance(typeof(T));   // Create new instance of T
+                            Type type = obj.GetType();                          // Get the type of T
+                            PropertyInfo[] info = type.GetProperties();         // Get all public properties of T
+
+                            // Set value to all properties
+                            for (int i = 0; i < info.Length; i++)
                             {
-                                value = reader[fieldName];
+                                string fieldName = info[i].Name;
+                                object? value = null;
+                                try
+                                {
+                                    value = reader[fieldName];
+                                }
+                                catch
+                                {
+                                    value = null;
+                                }
+                                // Specialized convertion
+                                string propertyTypeName = info[i].PropertyType.Name;
+                                if (propertyTypeName == "Guid")
+                                {
+                                    info[i].SetValue(obj, Guid.Parse(value as string));
+                                }
+                                else
+                                {
+                                    info[i].SetValue(obj, value);
+                                }
                             }
-                            catch
-                            {
-                                value = null;
-                            }
-                            // Specialized convertion
-                            string propertyTypeName = info[i].PropertyType.Name;
-                            if (propertyTypeName == "Guid")
-                            {
-                                info[i].SetValue(obj, Guid.Parse(value as string));
-                            }
-                            else
-                            {
-                                info[i].SetValue(obj, value);
-                            }
+                            data.Add((T)obj);
                         }
-                        data.Add((T)obj);
+                    }
+                    else
+                    {
+                        throw new Exception("Not Found");
                     }
                 }   
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 throw;
             }

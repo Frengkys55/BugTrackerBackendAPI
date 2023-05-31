@@ -22,12 +22,12 @@ namespace BugTrackerBackendAPI.Controllers.Projects
                 string connectionString = _configuration.GetConnectionString("Default");
                 project.UpdateProject(project, connectionString);
                 response.StatusCode = System.Net.HttpStatusCode.OK;
+                return Ok();
             }
             catch (Exception err)
             {
                 return StatusCode(500, err.Message);
             }
-            return Ok();
         }
 
         /// <summary>

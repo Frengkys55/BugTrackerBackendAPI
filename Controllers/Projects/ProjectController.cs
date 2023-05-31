@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Azure.Core;
 using System.Web.Http.Results;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,9 +46,9 @@ namespace BugTrackerBackendAPI.Controllers.Projects
             }
         }
 
-        // GET api/<ProjectController>/5
+        [EnableCors("AllowAllOrigins")]
         [HttpGet("{id}")]
-        public IActionResult GetProjectDetail([FromHeader] string accesstoken, [Required] Guid id)
+        public IActionResult GetProjectDetail([FromRoute] Guid id, [FromHeader] string accesstoken)
         {
             // TODO: implement access token
 
@@ -60,7 +61,15 @@ namespace BugTrackerBackendAPI.Controllers.Projects
             }
             catch (Exception err)
             {
-                return BadRequest(err.Message);
+                if (err.Message.Contains("Not Found"))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest(err);
+
+                }
             }
         }
     }
