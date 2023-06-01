@@ -10,24 +10,40 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
     [ApiController]
     public class TicketController : ControllerBase
     {
+        IConfiguration _configuration;
+        public TicketController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         /// <summary>
         /// Get list of available tickets from a specified project
         /// </summary>
         /// <param name="accesstoken"></param>
         /// <returns></returns>
-        [HttpGet("GetTickets")]
-        public IEnumerable<Ticket> GetTickets([FromHeader] string accesstoken, Guid projectGuid)
+        [HttpGet("GetAllTickets")]
+        public IEnumerable<ShortTicket> GetAllTickets([FromHeader] string accesstoken)
         {
-            // TODO: Implement accesstoken
-
-            Guid userGuid = Guid.NewGuid();
-
+            string connectionString = _configuration.GetConnectionString("Default");
             try
             {
-                return new Ticket().GetTicketList(userGuid);
+                return new Ticket().GetAllTicketList(accesstoken, connectionString).ToList();
             }
-            catch (Exception err)
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("GetHighestSeverityTickets")]
+        public IEnumerable<ShortTicket> GetHighestSeverityTickets([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return new Ticket().GetHighestSeverityTicketList(accesstoken, connectionString).ToList();
+            }
+            catch (Exception)
             {
                 throw;
             }
@@ -42,11 +58,11 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet]
         public Ticket GetTicket([Required] [FromHeader] string accesstoken, [Required] [FromQuery] Guid id)
         {
-            // TODO: implement access token
+            string connectionString = _configuration.GetConnectionString("Default");
 
             try
             {
-                return new Ticket().GetTicketDetail(id);
+                return new Ticket().GetTicketDetail(accesstoken, id, connectionString);
             }
             catch (Exception err)
             {
@@ -65,11 +81,12 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         public HttpResponseMessage CreateTicket([Required] [FromHeader] string accesstoken, [FromBody] Ticket ticket, [FromQuery] Guid projectGuid)
         {
             // TODO: Implement acces token method
+            string connectionString = _configuration.GetConnectionString("Default");
 
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
             try
             {
-                new Ticket().CreateTicket(ticket, projectGuid);
+                new Ticket().CreateTicket(ticket, projectGuid, connectionString, accesstoken);
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.Created;
             }
             catch (Exception err)

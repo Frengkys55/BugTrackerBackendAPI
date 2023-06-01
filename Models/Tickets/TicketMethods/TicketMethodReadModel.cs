@@ -4,34 +4,19 @@ namespace BugTrackerBackendAPI.Models
 {
     public partial class Ticket
     {
-        public Ticket GetTicketDetail(Guid userGuid)
+        public Ticket GetTicketDetail(string accesstoken, Guid ticketGuid, string connectionString)
         {
-            return new Ticket()
+            Data.DbHelper.GenericRead<Ticket> helper = new Data.DbHelper.GenericRead<Ticket>();
+            string query = "SELECT * FROM GetTicketDetail ('" + accesstoken + "', '" + ticketGuid + "')";
+            try
             {
-                Id = new Random().Next(0, 100),
-                Guid = Guid.NewGuid(),
-                Title = "Implement GetTicketListMethod (" + new Random().Next(0, 100) + ")",
-                Description = "This method is still using sample content",
-                Project = new Project()
-                {
-                    Name = "Replace this placeholder text (" + new Random().Next(0, 100) + ")",
-                },
-                Comments = null,
-                DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                User = new User()
-                {
-                    Username = "User",
-                },
-                Severity = new Severity()
-                {
-                    Title = "Severe"
-                },
-                Type = new Type()
-                {
-                    Name = "Debug"
-                }
-            };
+                var result = helper.Read(query, connectionString);
+                return result.ToList()[0];
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

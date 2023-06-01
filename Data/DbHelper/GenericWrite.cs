@@ -6,7 +6,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
 {
     public class GenericWrite<T>
     {
-        public int WriteUsingProcedure(string connectionString, string command, T data, IEnumerable<string>? propertyToIgnore = null)
+        public int WriteUsingProcedure(string connectionString, string command, T data, IEnumerable<string>? propertyToIgnore = null, IEnumerable<KeyValuePair<string, string>>? additionalParameters = null)
         {
             if (connectionString == string.Empty)
             {
@@ -39,6 +39,14 @@ namespace BugTrackerBackendAPI.Data.DbHelper
                 else
                 {
                     sqlCommand.Parameters.Add(new SqlParameter("@" + property.Name, property.GetValue(data)));
+                }
+            }
+
+            if(additionalParameters != null)
+            {
+                foreach (var parameter in additionalParameters)
+                {
+                    sqlCommand.Parameters.Add(new SqlParameter("@" + parameter.Key, parameter.Value));
                 }
             }
 

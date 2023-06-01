@@ -12,14 +12,14 @@ namespace BugTrackerBackendAPI.Models
         public Guid Guid { get; set; }
 
         [Required]
-        public Project Project { get; set; }
+        public string Project { get; set; }
 
         [Required]
         internal User User { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         public string? Description { get; set; }
 
@@ -30,12 +30,10 @@ namespace BugTrackerBackendAPI.Models
         public DateTime? DateModified { get; set; }
 
         [Required]
-        public Severity? Severity { get; set; }
+        public string Severity { get; set; }
 
         [Required]
-        public Type Type { get; set; }
-
-        public ICollection<Comment> Comments { get; set; }
+        public string Type { get; set; }
     }
 
 }
