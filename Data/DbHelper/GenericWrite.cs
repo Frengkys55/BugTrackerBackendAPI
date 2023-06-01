@@ -6,6 +6,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
 {
     public class GenericWrite<T>
     {
+        [Obsolete("Use DbWriter instead. I just moved this method to a new class so that you this method can be overloaded with a normal one.")]
         public int WriteUsingProcedure(string connectionString, string command, T data, IEnumerable<string>? propertyToIgnore = null, IEnumerable<KeyValuePair<string, string>>? additionalParameters = null)
         {
             if (connectionString == string.Empty)

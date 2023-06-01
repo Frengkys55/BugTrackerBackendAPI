@@ -132,10 +132,12 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpDelete]
         public HttpResponseMessage Delete([FromHeader] string accesstoken, [FromQuery] Guid id)
         {
+            string connectionString = _configuration.GetConnectionString("Default");
+
             HttpResponseMessage httpsResponseMessage = new HttpResponseMessage();
             try
             {
-                new Ticket().DeleteTicket(id);
+                new Ticket().DeleteTicket(id, accesstoken, connectionString);
                 httpsResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
             }
             catch (Exception err)
