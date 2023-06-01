@@ -111,7 +111,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
             try
             {
-                new Ticket().UpdateTicket(ticket);
+                new Ticket().UpdateTicket(ticket, accesstoken, _configuration.GetConnectionString("Default"));
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
             }
             catch (Exception err)
