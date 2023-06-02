@@ -11,10 +11,10 @@ namespace BugTrackerBackendAPI.Models
         /// <param name="ticketGuid">Your ticket guid to use</param>
         /// <param name="connectionString">Database connection string/param>
         /// <returns></returns>
-        public async Task<Ticket> GetTicketDetail(string accesstoken, Guid ticketGuid, string connectionString)
+        public async Task<Ticket> GetLongestUnsolvedTicket(string accesstoken, string connectionString)
         {
             Data.DbHelper.GenericRead<Ticket> helper = new Data.DbHelper.GenericRead<Ticket>();
-            string query = "SELECT * FROM GetTicketDetail ('" + accesstoken + "', '" + ticketGuid + "')";
+            string query = "SELECT * FROM GetLongestUnsolvedTicket ('" + accesstoken + "')";
             try
             {
                 Ticket ticket = new Ticket();

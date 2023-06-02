@@ -37,6 +37,12 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
+        /// <summary>
+        /// Get tickets for specified project
+        /// </summary>
+        /// <param name="accesstoken">Your given access token</param>
+        /// <param name="project"></param>
+        /// <returns></returns>
         [HttpGet("{project}")]
         public async Task<IEnumerable<ShortTicket>> GetProjectTickets([FromHeader] string accesstoken, Guid project)
         {
@@ -51,21 +57,6 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
-
-
-        [HttpGet("GetHighestSeverityTickets")]
-        public async Task<IEnumerable<ShortTicket>> GetHighestSeverityTickets([FromHeader] string accesstoken)
-        {
-            string connectionString = _configuration.GetConnectionString("Default");
-            try
-            {
-                return await new Ticket().GetHighestSeverityTicketList(accesstoken, connectionString);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
 
         /// <summary>
         /// Get detail of a ticket from database
@@ -165,6 +156,96 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
 
             return httpsResponseMessage;
+        }
+
+        /// <summary>
+        /// Get available ticket types
+        /// </summary>
+        /// <param name="accesstoken">Your given access token</param>
+        /// <returns></returns>
+        [HttpGet("Types")]
+        public async Task<IEnumerable<Models.Tickets.TypeModel>> GetAllTicketTypes([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetAllTicketTypes(accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get awailable ticket severity categories
+        /// </summary>
+        /// <param name="accesstoken">Your given access token</param>
+        /// <returns></returns>
+        [HttpGet("Severities")]
+        public async Task<IEnumerable<Models.Tickets.SeverityModel>> GetAllTicketSeverities([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetAllTicketSeverities(accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Return a ticket with the highest severity
+        /// </summary>
+        /// <param name="accesstoken">Your given access token</param>
+        /// <returns></returns>
+        [HttpGet("GetHighestSeverityTickets")]
+        public async Task<IEnumerable<ShortTicket>> GetHighestSeverityTickets([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetHighestSeverityTicketList(accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get the longest unsolved ticket
+        /// </summary>
+        /// <param name="accesstoken">Your given access token</param>
+        /// <returns></returns>
+        [HttpGet("LongestUnsolved")]
+        public async Task<Ticket> GetLongestUnsolvedTicket([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetLongestUnsolvedTicket(accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("LongestUnsolvedTickets")]
+        public async Task<IEnumerable<Ticket>> GetLongestUnsolvedTickets([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetLongestUnsolvedTickets(accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

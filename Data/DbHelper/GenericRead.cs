@@ -56,7 +56,14 @@ namespace BugTrackerBackendAPI.Data.DbHelper
                                 }
                                 else
                                 {
-                                    info[i].SetValue(obj, value);
+                                    try
+                                    {
+                                        info[i].SetValue(obj, value);
+                                    }
+                                    catch
+                                    {
+                                        info[i].SetValue(obj, null);
+                                    }
                                 }
                             }
                             data.Add((T)obj);
