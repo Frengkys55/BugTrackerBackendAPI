@@ -13,7 +13,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
     /// <typeparam name="T"></typeparam>
     public class GenericRead<T>
     {
-        public ICollection<T> Read(string query, string connectionString, Collection<KeyValuePair<string, string>> parameters = null)
+        public async Task<ICollection<T>> Read(string query, string connectionString, Collection<KeyValuePair<string, string>> parameters = null)
         {
             Collection<T> data = new Collection<T>();
             SqlConnection con = new SqlConnection(connectionString);
@@ -75,9 +75,9 @@ namespace BugTrackerBackendAPI.Data.DbHelper
             finally
             {
                 con.Close();
-                con.DisposeAsync();
-                sqlCommand.DisposeAsync();
-                reader.DisposeAsync();
+                await con.DisposeAsync();
+                await sqlCommand.DisposeAsync();
+                await reader.DisposeAsync();
             }
 
             return data;

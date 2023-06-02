@@ -31,13 +31,13 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         /// <param name="accesstoken">Logged in user access token information</param>
         /// <returns></returns>
         [HttpGet("GetProjects")]
-        public IActionResult GetAllProjects([FromHeader] string accesstoken)
+        public async Task<IActionResult> GetAllProjects([FromHeader] string accesstoken)
         {
             // TODO: Implmenent access token
             HttpRequestMessage message = new HttpRequestMessage();
             try
             {
-                List<ShortProjectInfo> projects = new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default")).ToList();
+               var projects = await new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default"));
                 return Ok(projects);
             }
             catch (Exception err)

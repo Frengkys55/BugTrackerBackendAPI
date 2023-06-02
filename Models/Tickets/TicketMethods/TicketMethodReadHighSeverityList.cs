@@ -4,7 +4,7 @@ namespace BugTrackerBackendAPI.Models
 {
     public partial class Ticket
     {
-        public ICollection<ShortTicket> GetHighestSeverityTicketList(string accesstoken, string connectionString)
+        public async Task<ICollection<ShortTicket>> GetHighestSeverityTicketList(string accesstoken, string connectionString)
         {
             Collection<ShortTicket> list = new Collection<ShortTicket>();
 
@@ -13,8 +13,7 @@ namespace BugTrackerBackendAPI.Models
             string query = "SELECT * FROM GetHighestSeverityTicketsShort ('" + accesstoken.ToString() + "')";
             try
             {
-                var result = dbRead.Read(query, connectionString);
-                return result;
+                return await dbRead.Read(query, connectionString);
             }
             catch (Exception)
             {

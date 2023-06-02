@@ -1,6 +1,8 @@
 ﻿using BugTrackerBackendAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,12 +24,12 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <param name="accesstoken"></param>
         /// <returns></returns>
         [HttpGet("GetAllTickets")]
-        public IEnumerable<ShortTicket> GetAllTickets([FromHeader] string accesstoken)
+        public async Task<IEnumerable<ShortTicket>> GetAllTickets([FromHeader] string accesstoken)
         {
             string connectionString = _configuration.GetConnectionString("Default");
             try
             {
-                return new Ticket().GetAllTicketList(accesstoken, connectionString).ToList();
+                return await new Ticket().GetAllTicketList(accesstoken, connectionString);
             }
             catch (Exception)
             {
@@ -35,13 +37,29 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
-        [HttpGet("GetHighestSeverityTickets")]
-        public IEnumerable<ShortTicket> GetHighestSeverityTickets([FromHeader] string accesstoken)
+        [HttpGet("{project}")]
+        public async Task<IEnumerable<ShortTicket>> GetProjectTickets([FromHeader] string accesstoken, Guid project)
         {
             string connectionString = _configuration.GetConnectionString("Default");
             try
             {
-                return new Ticket().GetHighestSeverityTicketList(accesstoken, connectionString).ToList();
+                return await new Ticket().GetProjectTickets(project, accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
+        [HttpGet("GetHighestSeverityTickets")]
+        public async Task<IEnumerable<ShortTicket>> GetHighestSeverityTickets([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetHighestSeverityTicketList(accesstoken, connectionString);
             }
             catch (Exception)
             {
@@ -56,13 +74,13 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <param name="id">Guid of the ticket</param>
         /// <returns></returns>
         [HttpGet]
-        public Ticket GetTicket([Required] [FromHeader] string accesstoken, [Required] [FromQuery] Guid id)
+        public async Task<Ticket> GetTicket([Required] [FromHeader] string accesstoken, [Required] [FromQuery] Guid id)
         {
             string connectionString = _configuration.GetConnectionString("Default");
 
             try
             {
-                return new Ticket().GetTicketDetail(accesstoken, id, connectionString);
+                return await new Ticket().GetTicketDetail(accesstoken, id, connectionString);
             }
             catch (Exception err)
             {

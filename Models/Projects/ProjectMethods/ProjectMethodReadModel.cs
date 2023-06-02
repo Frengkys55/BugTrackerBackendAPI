@@ -13,12 +13,19 @@ namespace BugTrackerBackendAPI.Models
         /// <param name="guid">Guid of the specified project</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Project GetProject(Guid guid, string accesstoken, string connectionString)
+        public async Task<Project> GetProject(Guid guid, string accesstoken, string connectionString)
         {
             Data.DbHelper.GenericRead<Project> readProject = new Data.DbHelper.GenericRead<Project>();
             try
             {
-                return readProject.Read("SELECT * FROM GetProjectDetail('" + guid + "', '" + accesstoken + "')", connectionString).ToList()[0];
+                var result = await readProject.Read("SELECT * FROM GetProjectDetail('" + guid + "', '" + accesstoken + "')", connectionString);
+                Project project = new Project();
+                foreach (var item in result)
+                {
+                    project = item;
+                    break;
+                }
+                return project;
             }
             catch (Exception)
             {
