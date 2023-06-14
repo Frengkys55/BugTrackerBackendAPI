@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Comments\" />
     <Folder Include="Models\Attachments\AttachmentMethods\" />
     <Folder Include="Models\Severities\SeverityMethods\" />
   </ItemGroup>

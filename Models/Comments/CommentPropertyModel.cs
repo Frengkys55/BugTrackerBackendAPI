@@ -5,25 +5,31 @@ namespace BugTrackerBackendAPI.Models
 {
     public partial class Comment
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
+        bool _hasAttachment = false;
 
+        [Key]
         [Required]
         public Guid Guid { get; set; }
 
         [Required]
-        public Ticket? Ticket { get; set; }
+        public Guid TicketGuid { get; set; }
 
         [Required]
         public string? CommentText { get; set; }
 
-        public Attachment? Attachment { get; set; }
+        public bool HasAttachment
+        {
+            get
+            {
+                return _hasAttachment;
+            }
+            private set
+            {
+                _hasAttachment = value;
+            }
+        }
 
         [Required]
         public DateTime? DateCreated { get; set; } = DateTime.Now;
-
-        [Required]
-        public User? User { get; set; }
     }
 }

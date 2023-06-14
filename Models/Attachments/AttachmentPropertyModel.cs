@@ -6,7 +6,7 @@ namespace BugTrackerBackendAPI.Models
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public Guid Guid { get; set; }
 
         [Required]
         public string? Name { get; set; }
@@ -18,12 +18,12 @@ namespace BugTrackerBackendAPI.Models
         public long Size { get; set; }
 
         [Required]
-        public AttachmentType? AttachmentType { get; set; }
+        public string? AttachmentType { get; set; }
 
         [Required]
         public string? Icon { get; set; }
 
         [Required]
-        public Comment? Comment { get; set; }
+        public Guid CommentGuid { get; set; }
     }
 }
