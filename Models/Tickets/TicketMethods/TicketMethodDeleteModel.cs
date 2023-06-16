@@ -4,7 +4,7 @@ namespace BugTrackerBackendAPI.Models
 {
     public partial class Ticket
     {
-        public void DeleteTicket(Guid ticketGuid, string accesstoken, string connectionString)
+        public async Task DeleteTicket(Guid ticketGuid, string accesstoken, string connectionString)
         {
             Data.DbHelper.DbWriter writer = new Data.DbHelper.DbWriter();
 
@@ -14,7 +14,7 @@ namespace BugTrackerBackendAPI.Models
                 new KeyValuePair<string, string>("AccessToken", accesstoken)
             };
 
-            int result = writer.WriteUsingProcedure(connectionString, "DeleteTicket", parameters);
+            int result = await writer.WriteUsingProcedure(connectionString, "DeleteTicket", parameters);
         }
     }
 }

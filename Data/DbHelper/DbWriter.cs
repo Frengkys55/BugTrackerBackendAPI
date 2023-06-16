@@ -13,7 +13,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
         /// <param name="connectionString">Database connection string</param>
         /// <param name="query">Parameter name</param>
         /// <param name="additionalParameters">Parametert to use</param>
-        public int WriteUsingProcedure(string connectionString, string query, IEnumerable<KeyValuePair<string, string>> parameters)
+        public async Task<int> WriteUsingProcedure(string connectionString, string query, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
@@ -62,7 +62,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        public int WriteUsingProcedureGeneric<T>(string connectionString, string command, T data, IEnumerable<string>? propertyToIgnore = null, IEnumerable<KeyValuePair<string, string>>? additionalParameters = null)
+        public async Task<int> WriteUsingProcedureGeneric<T>(string connectionString, string command, T data, IEnumerable<string>? propertyToIgnore = null, IEnumerable<KeyValuePair<string, string>>? additionalParameters = null)
         {
             if (connectionString == string.Empty)
             {

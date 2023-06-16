@@ -13,12 +13,31 @@ namespace BugTrackerBackendAPI.Data.DbHelper
     /// <typeparam name="T"></typeparam>
     public class GenericRead<T>
     {
+
+        /// <summary>
+        /// Read a data from database with object T as a reference
+        /// </summary>
+        /// <param name="query">Your database query</param>
+        /// <param name="connectionString">Your database connection string</param>
+        /// <param name="parameters">Any additional parameter</param>
+        /// <returns></returns>
         public async Task<ICollection<T>> Read(string query, string connectionString, Collection<KeyValuePair<string, string>> parameters = null)
         {
             Collection<T> data = new Collection<T>();
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             SqlCommand sqlCommand = new SqlCommand(query, con);
+
+            if (parameters != null)
+            {
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.Clear();
+                foreach (var parameter in parameters)
+                {
+                    sqlCommand.Parameters.Add(new SqlParameter("@" + parameter.Key, parameter.Value));
+                }
+            }
+
             SqlDataReader reader = sqlCommand.ExecuteReader();
             try
             {
