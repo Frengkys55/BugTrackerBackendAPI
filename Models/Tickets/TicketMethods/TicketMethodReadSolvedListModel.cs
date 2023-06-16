@@ -10,7 +10,7 @@ namespace BugTrackerBackendAPI.Models
 
             Data.DbHelper.GenericRead<ShortTicket> dbRead = new Data.DbHelper.GenericRead<ShortTicket>();
 
-            string query = "SELECT * FROM GetSolvedTicketShort ('" + accesstoken.ToString() + "')";
+            string query = "SELECT * FROM GetSolvedTicketsShort ('" + accesstoken.ToString() + "')";
             try
             {
                 return await dbRead.Read(query, connectionString);
