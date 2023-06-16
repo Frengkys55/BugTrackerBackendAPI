@@ -247,5 +247,19 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
                 throw;
             }
         }
+
+        [HttpGet("SolvedTickets")]
+        public async Task<IEnumerable<ShortTicket>> GetSolvedTickets([FromHeader] string accesstoken)
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return await new Ticket().GetAllSolvedTicketList(accesstoken, connectionString);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
