@@ -37,7 +37,7 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
 
             try
             {
-                var result = await new User().AddUser(user, connectionString);
+                var result = await new User().AddUserMinimal(user, connectionString);
 
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.Created;
                 return httpResponseMessage;
