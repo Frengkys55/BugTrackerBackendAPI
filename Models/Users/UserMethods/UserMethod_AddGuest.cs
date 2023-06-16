@@ -3,14 +3,14 @@
     public partial class User
     {
         /// <summary>
-        /// Register new user
+        /// Register new guest user
         /// </summary>
         /// <param name="user">Information about the user</param>
         /// <param name="connectionString">Your database connection string</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<bool> AddUserMinimal(User user, string connectionString)
+        public async Task<bool> AddUserGuestMinimal(User user, string connectionString)
         {
             if (user == null)
             {
