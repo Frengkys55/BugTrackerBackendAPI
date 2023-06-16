@@ -9,6 +9,9 @@ namespace BugTrackerBackendAPI.Models
         [Required]
         public int Id { get; set; }
 
+        [Required]
+        public Guid Guid { get; set; }
+
         public string? FirstName{ get; set; }
 
         public string? LastName { get; set; }
