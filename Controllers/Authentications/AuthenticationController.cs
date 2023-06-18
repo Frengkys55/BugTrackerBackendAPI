@@ -1,5 +1,6 @@
 ﻿using BugTrackerBackendAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace BugTrackerBackendAPI.Controllers.Authentications
 {
@@ -65,7 +66,20 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
                 throw new Exception(nameof(user.Username));
             }
 
-            throw new NotImplementedException();
+            string connectionString = _configuration.GetConnectionString("Default");
+
+            try
+            {
+                var result = await new Models.Authentications.Authentication().Login(user, connectionString);
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+                httpResponseMessage.Content = new StringContent(result);
+                return httpResponseMessage;
+            }
+            catch (Exception err)
+            {
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+                httpResponseMessage.Content = new StringContent(err.Message);
+            }
         }
 
         [HttpGet("Logout")]
