@@ -51,7 +51,15 @@ namespace BugTrackerBackendAPI.Data.DbHelper.Procedure
                         continue;
 
                     string name = property.Name;
-                    object value = property.GetValue(data);
+                    object value = null;
+                    try
+                    {
+                        value = property.GetValue(data);
+                    }
+                    catch (Exception)
+                    {
+                        value = DBNull.Value;
+                    }
 
                     com.Parameters.Add(new SqlParameter("@" + name, value));
                 }
