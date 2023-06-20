@@ -25,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Models\Attachments\AttachmentMethods\" />
     <Folder Include="Models\Severities\SeverityMethods\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

@@ -18,12 +18,19 @@ namespace BugTrackerBackendAPI.Controllers.Projects
     public partial class ProjectController : ControllerBase
     {
         private IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public ProjectController(IConfiguration configuration)
+
+        /// <summary>
+        /// Used to read configuration and application environment
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="_environment"></param>
+        public ProjectController(IConfiguration configuration, IWebHostEnvironment _environment)
         {
             _configuration = configuration;
+            this._environment = _environment;
         }
-
 
         /// <summary>
         /// Get all available project for specific user

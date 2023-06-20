@@ -11,19 +11,20 @@ namespace BugTrackerBackendAPI.Models
         /// <param name="userGuid">Guid of the user to get project list from</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<ShortProjectInfoWithTicketCount> GetHighestTicketCount(string accesstoken, string connectionString)
+        public async Task<ProjectInfoWithTicketCount> GetHighestTicketCount(string accesstoken, string connectionString)
         {
-            ShortProjectInfoWithTicketCount shortProjectInfoWithTicketCount = new ShortProjectInfoWithTicketCount();
+            ProjectInfoWithTicketCount projectInfoWithTicketCount = new ProjectInfoWithTicketCount();
 
-            Data.DbHelper.GenericRead<ShortProjectInfoWithTicketCount> reader = new Data.DbHelper.GenericRead<ShortProjectInfoWithTicketCount>();
+            Data.DbHelper.Procedure.Executor reader = new Data.DbHelper.Procedure.Executor(connectionString);
 
-            string query = "USE BugTracker_Demo; SELECT * FROM GetHighestTicketCountProject('" + accesstoken + "');";
+            string query = "GetHighestCountingTicketProject";
             try
+            
             {
-                var result = await reader.Read(query, connectionString);
+                var result = await reader.Execute<Authentications.Authentication, ProjectInfoWithTicketCount>(query, new Authentications.Authentication { accesstoken = accesstoken });
                 foreach (var item in result)
                 {
-                    shortProjectInfoWithTicketCount = item;
+                    projectInfoWithTicketCount = item;
                     break;
                 }
             }
@@ -31,7 +32,7 @@ namespace BugTrackerBackendAPI.Models
             {
                 throw;
             }
-            return shortProjectInfoWithTicketCount;
+            return projectInfoWithTicketCount;
         }
     }
 }

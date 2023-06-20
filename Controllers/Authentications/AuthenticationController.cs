@@ -92,7 +92,7 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
             try
             {
                 var result = await new Models.Authentications.Authentication().Logout(accesstoken, connectionString);
-                return Ok();
+                return Ok("Success");
             }
             catch (Exception err)
             {

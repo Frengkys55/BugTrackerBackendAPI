@@ -1,6 +1,6 @@
 ﻿namespace BugTrackerBackendAPI.Models.Projects
 {
-    public class ShortProjectInfoWithTicketCount : ShortProjectInfo
+    public class ProjectInfoWithTicketCount : Project
     {
         public int TicketCount { get; set; }
 

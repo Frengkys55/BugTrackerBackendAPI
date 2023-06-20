@@ -7,7 +7,7 @@ namespace BugTrackerBackendAPI.Models.Authentications
     {
         public async Task<int> Logout(string accesstoken, string connectionString)
         {
-            if (string.IsNullOrEmpty(accesstoken) == null) throw new ArgumentNullException(nameof(accesstoken));
+            if (string.IsNullOrEmpty(accesstoken)) throw new ArgumentNullException(nameof(accesstoken));
             if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
 
             string procedureName = "RemoveUserToken";
