@@ -161,7 +161,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <summary>
         /// Get available ticket types
         /// </summary>
-        /// <param name="accesstoken">Your given access token</param>
+        /// <param name="accesstoken">User's access token</param>
         /// <returns></returns>
         [HttpGet("Types")]
         public async Task<IEnumerable<Models.Tickets.TypeModel>> GetAllTicketTypes([FromHeader] string accesstoken)
@@ -180,7 +180,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <summary>
         /// Get awailable ticket severity categories
         /// </summary>
-        /// <param name="accesstoken">Your given access token</param>
+        /// <param name="accesstoken">User's access token</param>
         /// <returns></returns>
         [HttpGet("Severities")]
         public async Task<IEnumerable<Models.Tickets.SeverityModel>> GetAllTicketSeverities([FromHeader] string accesstoken)
@@ -199,7 +199,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <summary>
         /// Return a ticket with the highest severity
         /// </summary>
-        /// <param name="accesstoken">Your given access token</param>
+        /// <param name="accesstoken">User's access token</param>
         /// <returns></returns>
         [HttpGet("GetHighestSeverityTickets")]
         public async Task<IEnumerable<ShortTicket>> GetHighestSeverityTickets([FromHeader] string accesstoken)
@@ -218,7 +218,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <summary>
         /// Get the longest unsolved ticket
         /// </summary>
-        /// <param name="accesstoken">Your given access token</param>
+        /// <param name="accesstoken">User's access token</param>
         /// <returns></returns>
         [HttpGet("LongestUnsolved")]
         public async Task<Ticket> GetLongestUnsolvedTicket([FromHeader] string accesstoken)
@@ -234,6 +234,11 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
+        /// <summary>
+        /// Get user's longest unsolved ticket
+        /// </summary>
+        /// <param name="accesstoken">User's access token</param>
+        /// <returns></returns>
         [HttpGet("LongestUnsolvedTickets")]
         public async Task<IEnumerable<Ticket>> GetLongestUnsolvedTickets([FromHeader] string accesstoken)
         {
@@ -248,6 +253,11 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
+        /// <summary>
+        /// Get list of tickets that has been solved by user
+        /// </summary>
+        /// <param name="accesstoken">User's access token</param>
+        /// <returns></returns>
         [HttpGet("SolvedTickets")]
         public async Task<IEnumerable<ShortTicket>> GetSolvedTickets([FromHeader] string accesstoken)
         {
@@ -260,6 +270,12 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             {
                 throw;
             }
+        }
+
+        [HttpGet("MarkTicketComplete")]
+        public async Task<IActionResult> MarkTicketSolved(Guid id, string accesstoken)
+        {
+            return BadRequest(new NotImplementedException());
         }
     }
 }

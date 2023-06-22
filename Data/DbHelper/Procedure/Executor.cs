@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
+using System.Net;
 using System.Reflection;
 using System.Reflection.Metadata;
 
@@ -25,7 +26,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper.Procedure
         /// <param name="propertyToIgnore">List of properties to ignore from your data</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<ICollection<TReturn>> Execute<T, TReturn>(string procedureName, T data = default, List<string> propertyToIgnore = default)
+        public async Task<ICollection<TReturn>> Execute<T, TReturn>(string procedureName, T data = default, List<string> propertyToIgnore = default, List<KeyValuePair<string, object>> AdditionalData = null)
         {
             if (procedureName == null)
                 throw new ArgumentNullException(nameof(procedureName));
@@ -62,6 +63,14 @@ namespace BugTrackerBackendAPI.Data.DbHelper.Procedure
                     }
 
                     com.Parameters.Add(new SqlParameter("@" + name, value));
+                }
+            }
+
+            if(AdditionalData != null)
+            {
+                foreach (var item in AdditionalData)
+                {
+                    com.Parameters.Add(new SqlParameter("@" + item.Key, item.Value));
                 }
             }
 

@@ -25,7 +25,6 @@ namespace BugTrackerBackendAPI.Controllers.Projects
             {
                 return BadRequest(err.Message);
             }
-            return NoContent();
         }
     }
 }

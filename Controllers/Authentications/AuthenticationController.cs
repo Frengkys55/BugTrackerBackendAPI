@@ -1,6 +1,7 @@
 ﻿using BugTrackerBackendAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.Http.Results;
@@ -54,6 +55,13 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
             }
         }
 
+        /// <summary>
+        /// Log user in
+        /// </summary>
+        /// <param name="user">User authentication information</param>
+        /// <returns>Return user's access token</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] UserShort user)
         {
@@ -81,6 +89,11 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
             }
         }
 
+        /// <summary>
+        /// Log user off
+        /// </summary>
+        /// <param name="accesstoken">User's token information</param>
+        /// <returns></returns>
         [HttpGet("Logout")]
         public async Task<IActionResult> Logout([Required] [FromHeader] string accesstoken)
         {
@@ -99,5 +112,35 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
                 return BadRequest(err.Message);   
             }
         }
+
+        /// <summary>
+        /// Request password reset when user forgot their password. For now it will only ask for username and email.
+        /// Future request will also require user to solve their security question.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpGet("RequestReset")]
+        public async Task<IActionResult> RequestPasswordReset()
+        {
+            throw new NotImplementedException();
+        }
+
+        #region Demo user
+
+        [HttpGet("RegisterGuest")]
+        public async Task<IActionResult> RegisterGuestUser()
+        {
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                return Content(await new User().AddUserGuestMinimal(connectionString));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        #endregion Demo user
     }
 }
