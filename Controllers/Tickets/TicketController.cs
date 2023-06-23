@@ -272,10 +272,26 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             }
         }
 
-        [HttpGet("MarkTicketComplete")]
-        public async Task<IActionResult> MarkTicketSolved(Guid id, string accesstoken)
+        [HttpGet("MarkTicketComplete/{id}")]
+        public async Task<IActionResult> MarkTicketSolved(Guid id, [Required] [FromHeader] string accesstoken)
         {
-            return BadRequest(new NotImplementedException());
+            string connectionString = _configuration.GetConnectionString("Default");
+            try
+            {
+                var result = await new Ticket().MarkSolved(id, accesstoken, connectionString);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
         }
     }
 }

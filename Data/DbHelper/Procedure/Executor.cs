@@ -26,7 +26,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper.Procedure
         /// <param name="propertyToIgnore">List of properties to ignore from your data</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<ICollection<TReturn>> Execute<T, TReturn>(string procedureName, T data = default, List<string> propertyToIgnore = default, List<KeyValuePair<string, object>> AdditionalData = null)
+        public async Task<ICollection<TReturn>> Execute<T, TReturn>(string procedureName, T data = default, List<string> propertyToIgnore = default, List<KeyValuePair<string, dynamic>> AdditionalData = null)
         {
             if (procedureName == null)
                 throw new ArgumentNullException(nameof(procedureName));
