@@ -1,25 +1,32 @@
-﻿using System.Collections.ObjectModel;
+﻿using BugTrackerBackendAPI.Data.DbHelper.Procedure;
+using BugTrackerBackendAPI.Models.Comments;
+using System.Collections.ObjectModel;
 
 namespace BugTrackerBackendAPI.Models
 {
     public partial class Comment
     {
-        public async Task<ICollection<Comment>> GetCommentListAsync(Guid ticketGuid, string accesstoken)
+        public async Task<ICollection<CommentMinimal>> GetCommentListAsync(Guid ticketGuid, string accesstoken, string connectionString)
         {
-            List<Comment> comments = new List<Comment>();
+            List<CommentMinimal> comments = new List<CommentMinimal>();
 
-            for (int i = 0; i < new Random().Next(2, 100); i++)
+            Executor executor = new Executor(connectionString);
+            string query = "ListComments";
+
+            List<KeyValuePair<string, dynamic>> additionalData = new List<KeyValuePair<string, dynamic>>
             {
-                comments.Add(new Comment()
-                {
-                    CommentText = "Replace this placeholder text (" + i + ")",
-                    Guid = Guid.NewGuid(),
-                    DateCreated = DateTime.Now,
-                    TicketGuid = ticketGuid
-                });
-            }
+                new KeyValuePair<string, dynamic>("Guid", ticketGuid.ToString()),
+                new KeyValuePair<string, dynamic>("accesstoken", accesstoken)
+            };
 
-            return comments;
+            try
+            {
+                return await executor.Execute<DBNull, CommentMinimal>(query, null, null, additionalData);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

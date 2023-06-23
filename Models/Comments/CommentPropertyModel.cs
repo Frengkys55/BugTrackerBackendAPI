@@ -14,6 +14,8 @@ namespace BugTrackerBackendAPI.Models
         [Required]
         public Guid TicketGuid { get; set; }
 
+        public string? TicketName { get; set; }
+
         [Required]
         public string? CommentText { get; set; }
 

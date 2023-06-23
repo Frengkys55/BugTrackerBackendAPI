@@ -1,4 +1,5 @@
 ﻿using BugTrackerBackendAPI.Models;
+using BugTrackerBackendAPI.Models.Comments;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations;
@@ -24,11 +25,16 @@ namespace BugTrackerBackendAPI.Controllers.Comments
         /// <param name="accesstoken">Your given access token</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<Comment>> GetComments([Required] [FromQuery] Guid id, [Required] [FromHeader] string accesstoken)
+        public async Task<IEnumerable<CommentMinimal>> GetComments([Required] [FromQuery] Guid id, [Required] [FromHeader] string accesstoken)
         {
-            List<Comment> comments = new Comment().GetCommentListAsync(id, accesstoken).Result.ToList();
-
-            return comments;
+            try
+            {
+                return await new Comment().GetCommentListAsync(id, accesstoken, _configuration.GetConnectionString("default"));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>
