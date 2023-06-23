@@ -9,6 +9,14 @@ namespace BugTrackerBackendAPI.Controllers.Comments
     [ApiController]
     public class CommentController : Controller
     {
+        IConfiguration _configuration;
+        IWebHostEnvironment _environment;
+        public CommentController(IConfiguration configuration, IWebHostEnvironment environment)
+        {
+            _configuration = configuration;
+            _environment = environment;
+        }
+
         /// <summary>
         /// Get list of comments in a ticket
         /// </summary>
@@ -35,14 +43,15 @@ namespace BugTrackerBackendAPI.Controllers.Comments
         public async Task<HttpResponseMessage> AddComment([Required] [FromQuery] Guid id, [Required] [FromBody] Comment comment, [Required] [FromHeader] string accesstoken)
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-
+            string connectionString = _configuration.GetConnectionString("Default");
             try
             {
-                var result = await new Comment().AddAsync(id, comment, accesstoken);
+                var result = await new Comment().AddAsync(id, comment, accesstoken, connectionString);
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.Created;
             }
             catch (Exception err)
             {
+                throw;
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 httpResponseMessage.ReasonPhrase = err.Message;
             }
@@ -64,7 +73,7 @@ namespace BugTrackerBackendAPI.Controllers.Comments
 
             try
             {
-                var result = await new Comment().DeleteAsync(id, accesstoken);
+                var result = await new Comment().DeleteAsync(id, accesstoken, _configuration.GetConnectionString("Default"));
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.Created;
             }
             catch (Exception err)
