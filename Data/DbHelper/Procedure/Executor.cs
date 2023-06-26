@@ -135,7 +135,6 @@ namespace BugTrackerBackendAPI.Data.DbHelper.Procedure
                 await com.DisposeAsync();
                 await con.CloseAsync();
                 await con.DisposeAsync();
-
             }
 
             return returnObject;
