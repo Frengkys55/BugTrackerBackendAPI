@@ -1,6 +1,7 @@
 ﻿using BugTrackerBackendAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Web.Http.Results;
 
 namespace BugTrackerBackendAPI.Controllers.Projects
@@ -19,7 +20,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
 
             try
             {
-                string connectionString = _configuration.GetConnectionString("Default");
+                string connectionString = _configuration.GetConnectionString("Default")!;
                 project.UpdateProject(project, connectionString);
                 response.StatusCode = System.Net.HttpStatusCode.OK;
                 return Ok();
@@ -42,12 +43,28 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         {
             HttpResponseMessage response = new HttpResponseMessage();
             response.StatusCode = System.Net.HttpStatusCode.Gone;
+            string address = $"{Request.Scheme}://{Request.Host}";
+
+            Project projectInner = new Project(_environment, address)
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Guid = project.Guid,
+                IconUrl = project.IconUrl,
+                BackgroundImageUrl = project.BackgroundImageUrl,
+                accesstoken = project.accesstoken,
+                DateCreated = project.DateCreated,
+                DateModified = project.DateModified,
+                Description = project.Description,
+                ProjectStatus = project.ProjectStatus,
+                User = project.User
+            };
 
             try
             {
                 // Replace guid that was received from user
-                project.Guid = Guid.NewGuid();
-                project.CreateProject(project, _configuration.GetConnectionString("Default"));
+                projectInner.Guid = Guid.NewGuid();
+                projectInner.CreateProject(projectInner, _configuration.GetConnectionString("Default")!);
                 response.StatusCode = System.Net.HttpStatusCode.Created;
                 response.ReasonPhrase = "Hei! It's created!";
             }

@@ -19,7 +19,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         {
             try
             {
-                new Project().DeleteProject(id, accesstoken, _configuration.GetConnectionString("Default"));
+                new Project().DeleteProject(id, accesstoken, _configuration.GetConnectionString("Default")!);
             }
             catch (Exception err)
             {

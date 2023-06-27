@@ -44,7 +44,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
             HttpRequestMessage message = new HttpRequestMessage();
             try
             {
-               var projects = await new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default"));
+               var projects = await new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default")!);
                 return Ok(projects);
             }
             catch (Exception err)
@@ -63,7 +63,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
 
             try
             {
-                string connectionString = _configuration.GetConnectionString("Default");
+                string connectionString = _configuration.GetConnectionString("Default")!;
                 return Ok(project.GetProject(id, accesstoken, connectionString));
             }
             catch (Exception err)

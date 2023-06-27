@@ -37,7 +37,7 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
                 throw new ArgumentNullException(nameof(user));
             }
 
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
 
             try
@@ -75,7 +75,7 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
                 throw new Exception(nameof(user.Username));
             }
 
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
 
             try
             {
@@ -100,7 +100,7 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
             if (accesstoken == null)
                 return BadRequest(new ArgumentNullException(nameof(accesstoken)));
 
-            string? connectionString = _configuration.GetConnectionString("Default");
+            string? connectionString = _configuration.GetConnectionString("Default")!;
 
             try
             {
@@ -130,7 +130,7 @@ namespace BugTrackerBackendAPI.Controllers.Authentications
         [HttpGet("RegisterGuest")]
         public async Task<IActionResult> RegisterGuestUser()
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return Content(await new User().AddUserGuestMinimal(connectionString));

@@ -26,7 +26,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("GetAllTickets")]
         public async Task<IEnumerable<ShortTicket>> GetAllTickets([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetAllTicketList(accesstoken, connectionString);
@@ -46,7 +46,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("{project}")]
         public async Task<IEnumerable<ShortTicket>> GetProjectTickets([FromHeader] string accesstoken, Guid project)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetProjectTickets(project, accesstoken, connectionString);
@@ -67,7 +67,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet]
         public async Task<Ticket> GetTicket([Required] [FromHeader] string accesstoken, [Required] [FromQuery] Guid id)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
 
             try
             {
@@ -90,7 +90,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         public HttpResponseMessage CreateTicket([Required] [FromHeader] string accesstoken, [FromBody] Ticket ticket, [FromQuery] Guid projectGuid)
         {
             // TODO: Implement acces token method
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
 
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
             try
@@ -120,7 +120,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
             try
             {
-                new Ticket().UpdateTicket(ticket, accesstoken, _configuration.GetConnectionString("Default"));
+                new Ticket().UpdateTicket(ticket, accesstoken, _configuration.GetConnectionString("Default")!);
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
             }
             catch (Exception err)
@@ -141,7 +141,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpDelete]
         public HttpResponseMessage Delete([FromHeader] string accesstoken, [FromQuery] Guid id)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
 
             HttpResponseMessage httpsResponseMessage = new HttpResponseMessage();
             try
@@ -166,7 +166,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("Types")]
         public async Task<IEnumerable<Models.Tickets.TypeModel>> GetAllTicketTypes([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetAllTicketTypes(accesstoken, connectionString);
@@ -185,7 +185,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("Severities")]
         public async Task<IEnumerable<Models.Tickets.SeverityModel>> GetAllTicketSeverities([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetAllTicketSeverities(accesstoken, connectionString);
@@ -204,7 +204,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("GetHighestSeverityTickets")]
         public async Task<IEnumerable<ShortTicket>> GetHighestSeverityTickets([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetHighestSeverityTicketList(accesstoken, connectionString);
@@ -223,7 +223,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("LongestUnsolved")]
         public async Task<Ticket> GetLongestUnsolvedTicket([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetLongestUnsolvedTicket(accesstoken, connectionString);
@@ -242,7 +242,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("LongestUnsolvedTickets")]
         public async Task<IEnumerable<Ticket>> GetLongestUnsolvedTickets([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetLongestUnsolvedTickets(accesstoken, connectionString);
@@ -261,7 +261,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("SolvedTickets")]
         public async Task<IEnumerable<ShortTicket>> GetSolvedTickets([FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 return await new Ticket().GetAllSolvedTicketList(accesstoken, connectionString);
@@ -275,7 +275,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         [HttpGet("MarkTicketComplete/{id}")]
         public async Task<IActionResult> MarkTicketSolved(Guid id, [Required] [FromHeader] string accesstoken)
         {
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 var result = await new Ticket().MarkSolved(id, accesstoken, connectionString);

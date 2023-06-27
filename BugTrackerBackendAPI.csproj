@@ -19,13 +19,16 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NSwag.Annotations" Version="13.19.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\Attachments\AttachmentMethods\" />
     <Folder Include="Models\Severities\SeverityMethods\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\UserData\Projects\Backgrounds\" />
+    <Folder Include="wwwroot\UserData\Projects\Icons\" />
   </ItemGroup>
 
 </Project>

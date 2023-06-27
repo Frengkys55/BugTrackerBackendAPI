@@ -20,7 +20,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
 
             try
             {
-                string connectionString = _configuration.GetConnectionString("Default");
+                string connectionString = _configuration.GetConnectionString("Default")!;
                 string imageSavelocation = _environment.WebRootPath;
                 project.UpdateProject(project, connectionString);
                 response.StatusCode = System.Net.HttpStatusCode.OK;

@@ -29,7 +29,7 @@ namespace BugTrackerBackendAPI.Controllers.Comments
         {
             try
             {
-                return await new Comment().GetCommentListAsync(id, accesstoken, _configuration.GetConnectionString("default"));
+                return await new Comment().GetCommentListAsync(id, accesstoken, _configuration.GetConnectionString("Default")!);
             }
             catch (Exception)
             {
@@ -49,7 +49,7 @@ namespace BugTrackerBackendAPI.Controllers.Comments
         public async Task<HttpResponseMessage> AddComment([Required] [FromQuery] Guid id, [Required] [FromBody] Comment comment, [Required] [FromHeader] string accesstoken)
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-            string connectionString = _configuration.GetConnectionString("Default");
+            string connectionString = _configuration.GetConnectionString("Default")!;
             try
             {
                 var result = await new Comment().AddAsync(id, comment, accesstoken, connectionString);
@@ -79,7 +79,7 @@ namespace BugTrackerBackendAPI.Controllers.Comments
 
             try
             {
-                var result = await new Comment().DeleteAsync(id, accesstoken, _configuration.GetConnectionString("Default"));
+                var result = await new Comment().DeleteAsync(id, accesstoken, _configuration.GetConnectionString("Default")!);
                 httpResponseMessage.StatusCode = System.Net.HttpStatusCode.Created;
             }
             catch (Exception err)

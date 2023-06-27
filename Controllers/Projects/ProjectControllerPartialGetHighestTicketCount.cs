@@ -18,7 +18,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         {
             try
             {
-                var result = await new Project().GetHighestTicketCount(accesstoken, _configuration.GetConnectionString("Default"));
+                var result = await new Project().GetHighestTicketCount(accesstoken, _configuration.GetConnectionString("Default")!);
                 return Ok(result);
             }
             catch (Exception err)
