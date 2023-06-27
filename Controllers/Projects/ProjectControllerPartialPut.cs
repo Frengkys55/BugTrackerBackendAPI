@@ -1,4 +1,5 @@
-﻿using BugTrackerBackendAPI.Models;
+﻿using Azure.Core;
+using BugTrackerBackendAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -14,14 +15,35 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         /// <param name="project">New information about the project to be updated</param>
         /// <returns></returns>
         [HttpPut]
-        public IActionResult UpdateProjectInformation([FromBody] Project project)
+        public async Task<IActionResult> UpdateProjectInformation([FromBody] Project project)
         {
             HttpResponseMessage response = new HttpResponseMessage();
+            string address = $"{Request.Scheme}://{Request.Host}";
+
+            var projectInner = new Project(_environment, address);
+
+            try
+            {
+;               projectInner.Name = project.Name;
+                projectInner.Guid = project.Guid;
+                projectInner.IconUrl = project.IconUrl;
+                projectInner.BackgroundImageUrl = project.BackgroundImageUrl;
+                projectInner.accesstoken = project.accesstoken;
+                projectInner.DateCreated = project.DateCreated;
+                projectInner.DateModified = project.DateModified;
+                projectInner.Description = project.Description;
+                projectInner.ProjectStatus = project.ProjectStatus;
+                projectInner.User = project.User;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             try
             {
                 string connectionString = _configuration.GetConnectionString("Default")!;
-                project.UpdateProject(project, connectionString);
+                await projectInner.UpdateProject(projectInner, connectionString);
                 response.StatusCode = System.Net.HttpStatusCode.OK;
                 return Ok();
             }
