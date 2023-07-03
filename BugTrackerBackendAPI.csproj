@@ -27,8 +27,6 @@
   <ItemGroup>
     <Folder Include="Models\Attachments\AttachmentMethods\" />
     <Folder Include="Models\Severities\SeverityMethods\" />
-    <Folder Include="wwwroot\UserData\Projects\Backgrounds\" />
-    <Folder Include="wwwroot\UserData\Projects\Icons\" />
   </ItemGroup>
 
 </Project>

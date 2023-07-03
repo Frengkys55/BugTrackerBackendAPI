@@ -46,7 +46,7 @@ namespace BugTrackerBackendAPI.Models
                 await new Data.Misc.StreamWriter().Write(iconSaveStream, path, true);
 
                 string iconUrl = (appAddress.EndsWith("/")) ? appAddress + "/UserData/Projects/Icons/" + fileName : appAddress + "/UserData/Projects/Icons/" + fileName;
-                project.IconUrl = iconUrl;
+                project.IconUrl = fileName;
             }
             catch (Exception)
             {
@@ -70,7 +70,7 @@ namespace BugTrackerBackendAPI.Models
                 await new Data.Misc.StreamWriter().Write(bgStream, path, true);
 
                 string backgroundImagePath = (appAddress.EndsWith("/")) ? appAddress + "UserData/Projects/Backgrounds/" + fileName : appAddress + "/UserData/Projects/Backgrounds/" + fileName;
-                project.BackgroundImageUrl = backgroundImagePath;
+                project.BackgroundImageUrl = fileName;
             }
             catch (Exception)
             {

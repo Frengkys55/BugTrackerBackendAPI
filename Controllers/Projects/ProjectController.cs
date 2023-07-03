@@ -59,7 +59,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
         {
             // TODO: implement access token
 
-            Project project = new Project();
+            Project project = new Project(_environment, "");
 
             try
             {

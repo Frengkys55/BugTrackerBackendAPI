@@ -50,7 +50,7 @@ namespace BugTrackerBackendAPI
             app.UseCors(corsPolicyName);
             app.UseAuthorization();
             app.MapControllers();
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
 
             app.Run();
         }

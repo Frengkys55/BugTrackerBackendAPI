@@ -1,5 +1,8 @@
-﻿namespace BugTrackerBackendAPI.Data.Misc
+﻿
+namespace BugTrackerBackendAPI.Data.Misc
 {
+    using System.IO; // Inside namespace works but not outside? what!?
+
     public class StreamWriter
     {
         /// <summary>

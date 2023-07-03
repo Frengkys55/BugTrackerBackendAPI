@@ -35,14 +35,14 @@ namespace BugTrackerBackendAPI.Models
 
             // Only execute when icon data is not null and the length is not equal to the size required for image with resolution of 32x32 pixels
             // Current limitation: I'm using threads to save the image to disk and leave it immediately. That means, if an excepion was thrown, main thread would not able to capture it.
-            if (iconData != null || iconData.Length > (32*32))
+            if (iconData != null && iconData.Length > (32*32))
             {
                 try
                 {
                     #region Setup save location
                     string fileName = Guid.NewGuid() + ".png";
                     string iconPath = Path.Combine(env.WebRootPath, folderRelativePath, "Icons", fileName);
-                    project.IconUrl = (appAddress.EndsWith("/")) ? appAddress + "UserData/Projects/Icons/" + fileName : appAddress + "/UserData/Projects/Icons/" + fileName;
+                    project.IconUrl = fileName;
                     #endregion Setup save location
 
                     // Method to save the image to disk (executed using Threading.Thread() method)
@@ -79,7 +79,7 @@ namespace BugTrackerBackendAPI.Models
                 }
             }
 
-            #endregion Icon saving
+            #endregion Background saving
             // Check project's icon. Is it a blob or url by trying to convert from base64string to byte array
             byte[] backgroundData = Array.Empty<byte>()!;
             try
@@ -93,18 +93,19 @@ namespace BugTrackerBackendAPI.Models
 
             // Only execute when icon data is not null and the length is not equal to the size required for image with resolution of 32x32 pixels
             // Current limitation: I'm using threads to save the image to disk and leave it immediately. That means, if an excepion was thrown, main thread would not able to capture it.
-            if (backgroundData != null || backgroundData.Length > (32 * 32))
+            if (backgroundData != null && backgroundData.Length > (32 * 32))
             {
                 try
                 {
                     #region Setup save location
                     string fileName = Guid.NewGuid() + ".png";
                     string backgroundPath = Path.Combine(env.WebRootPath, folderRelativePath, "Backgrounds", fileName);
-                    project.BackgroundImageUrl = (appAddress.EndsWith("/")) ? appAddress + "UserData/Projects/Backgrounds/" + fileName : appAddress + "/UserData/Projects/Backgrounds/" + fileName;
+                    //project.BackgroundImageUrl = (appAddress.EndsWith("/")) ? appAddress + "UserData/Projects/Backgrounds/" + fileName : appAddress + "/UserData/Projects/Backgrounds/" + fileName;
+                    project.BackgroundImageUrl = fileName;
                     #endregion Setup save location
 
                     // Method to save the image to disk (executed using Threading.Thread() method)
-                    var saveIcon = async (byte[] data, string path) =>
+                    var saveBackground = async (byte[] data, string path) =>
                     {
                         try
                         {
@@ -125,7 +126,7 @@ namespace BugTrackerBackendAPI.Models
                     // Assign Action to thread
                     Thread iconThread = new Thread(() =>
                     {
-                        saveIcon(iconData, backgroundPath);
+                        saveBackground(backgroundData, backgroundPath);
                     });
                     iconThreadId = iconThread.ManagedThreadId;
                     iconThread.IsBackground = false;
