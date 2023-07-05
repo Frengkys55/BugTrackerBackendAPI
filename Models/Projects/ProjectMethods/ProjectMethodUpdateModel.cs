@@ -84,7 +84,7 @@ namespace BugTrackerBackendAPI.Models
             byte[] backgroundData = Array.Empty<byte>()!;
             try
             {
-                iconData = Convert.FromBase64String(project.BackgroundImageUrl!);
+                backgroundData = Convert.FromBase64String(project.BackgroundImageUrl!);
             }
             catch
             {
@@ -115,7 +115,7 @@ namespace BugTrackerBackendAPI.Models
                             background.Encode(backgroundStream, SKEncodedImageFormat.Png, 100);
 
                             // Save the image
-                            await new Data.Misc.StreamWriter().Write(backgroundStream, backgroundPath);
+                            await new Data.Misc.StreamWriter().Write(backgroundStream, backgroundPath, true);
                         }
                         catch (Exception)
                         {

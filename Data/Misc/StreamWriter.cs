@@ -24,9 +24,10 @@ namespace BugTrackerBackendAPI.Data.Misc
             {
                 using var stream = new FileStream(path, FileMode.Create);
                 source.Position = 0;
-                source.CopyTo(stream);
-                stream.Flush();
+                await source.CopyToAsync(stream);
+                await stream.FlushAsync();
                 stream.Close();
+                stream.Dispose();
             }
             catch (Exception)
             {
