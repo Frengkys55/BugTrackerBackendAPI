@@ -44,7 +44,7 @@ namespace BugTrackerBackendAPI.Controllers.Projects
             HttpRequestMessage message = new HttpRequestMessage();
             try
             {
-                var projects = await new Project().GetProjectsList(accesstoken, _configuration.GetConnectionString("Default")!);
+                var projects = await new Project(_environment, string.Empty).GetProjectsList(accesstoken, _configuration.GetConnectionString("Default")!);
                
                 return Ok(projects);
             }

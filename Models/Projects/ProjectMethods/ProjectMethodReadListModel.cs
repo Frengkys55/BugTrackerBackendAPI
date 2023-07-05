@@ -23,22 +23,15 @@ namespace BugTrackerBackendAPI.Models
                 // Try loading files from disk to memory
                 try
                 {
-                    if (!shortProjectInfo.IconUrl!.ToLower().StartsWith("http") && shortProjectInfo.IconUrl.ToLower().Contains("n/a"))
-                    {
                         string iconPath = Path.Combine(env.WebRootPath, "UserData", "Projects", "Icons", shortProjectInfo.IconUrl!);
                         using var iconStream = new Data.File.Reader().Read(iconPath);
 
                         shortProjectInfo.IconUrl = Convert.ToBase64String(iconStream.ToArray());
                         _ = iconStream.DisposeAsync();
-                    }
-
-                    if (!shortProjectInfo.BackgroundImageUrl!.StartsWith("http") && shortProjectInfo.BackgroundImageUrl.ToLower().Contains("n/a"))
-                    {
                         string backgroundPath = Path.Combine(env.WebRootPath, "UserData", "Projects", "Backgrounds", shortProjectInfo.BackgroundImageUrl!);
                         using var backgroundStream = new Data.File.Reader().Read(backgroundPath);
 
                         shortProjectInfo.BackgroundImageUrl = Convert.ToBase64String(backgroundStream.ToArray());
-                    }
                 }
                 catch (Exception)
                 {

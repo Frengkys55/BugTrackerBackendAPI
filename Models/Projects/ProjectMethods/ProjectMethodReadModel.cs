@@ -22,7 +22,7 @@ namespace BugTrackerBackendAPI.Models
                 Project project = new Project();
                 project = result.ToList()[0];
 
-                if (!project.IconUrl.ToLower().Contains("n/a") || !project.IconUrl.ToLower().StartsWith("http"))
+                if (!project.IconUrl!.ToLower().Contains("n/a") || !project.IconUrl.ToLower().StartsWith("http"))
                 {
                     string path = Path.Combine(env.WebRootPath, "UserData", "Projects", "Icons", project.IconUrl);
                     try
@@ -35,7 +35,7 @@ namespace BugTrackerBackendAPI.Models
                     }
                 }
 
-                if (!project.BackgroundImageUrl.ToLower().Contains("n/a") || !project.BackgroundImageUrl.ToLower().StartsWith("http"))
+                if (!project.BackgroundImageUrl!.ToLower().Contains("n/a") || !project.BackgroundImageUrl.ToLower().StartsWith("http"))
                 {
                     string path = Path.Combine(env.WebRootPath, "UserData", "Projects", "Backgrounds", project.BackgroundImageUrl);
                     try
