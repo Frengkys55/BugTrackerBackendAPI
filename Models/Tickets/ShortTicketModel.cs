@@ -1,9 +1,9 @@
-﻿namespace BugTrackerBackendAPI.Models
+﻿using BugTrackerBackendAPI.Models.Tickets;
+
+namespace BugTrackerBackendAPI.Models
 {
-    public class ShortTicket
+    public class ShortTicket : TicketMinimal
     {
-        public Guid Guid { get; set; }
-        public string? Name { get; set; }
         public DateTime DateCreated { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BugTrackerBackendAPI.Models;
+using BugTrackerBackendAPI.Models.Tickets;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -259,7 +260,7 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         /// <param name="accesstoken">User's access token</param>
         /// <returns></returns>
         [HttpGet("SolvedTickets")]
-        public async Task<IEnumerable<ShortTicket>> GetSolvedTickets([FromHeader] string accesstoken)
+        public async Task<IEnumerable<SolvedTicket>> GetSolvedTickets([FromHeader] string accesstoken)
         {
             string connectionString = _configuration.GetConnectionString("Default")!;
             try

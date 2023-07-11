@@ -1,14 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using BugTrackerBackendAPI.Models.Tickets;
+using System.Collections.ObjectModel;
 
 namespace BugTrackerBackendAPI.Models
 {
     public partial class Ticket
     {
-        public async Task<ICollection<ShortTicket>> GetAllSolvedTicketList(string accesstoken, string connectionString)
+        public async Task<ICollection<SolvedTicket>> GetAllSolvedTicketList(string accesstoken, string connectionString)
         {
-            Collection<ShortTicket> list = new Collection<ShortTicket>();
+            Collection<SolvedTicket> list = new Collection<SolvedTicket>();
 
-            Data.DbHelper.GenericRead<ShortTicket> dbRead = new Data.DbHelper.GenericRead<ShortTicket>();
+            Data.DbHelper.GenericRead<SolvedTicket> dbRead = new Data.DbHelper.GenericRead<SolvedTicket>();
 
             string query = "SELECT * FROM GetSolvedTicketsShort ('" + accesstoken.ToString() + "')";
             try
