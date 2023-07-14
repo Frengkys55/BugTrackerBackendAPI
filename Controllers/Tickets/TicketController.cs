@@ -134,21 +134,28 @@ namespace BugTrackerBackendAPI.Controllers.Tickets
         }
 
         /// <summary>
-        /// Delete a ticket from database
+        /// Delete a ticket from databaseg
         /// </summary>
         /// <param name="accesstoken"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
-        public HttpResponseMessage Delete([FromHeader] string accesstoken, [FromQuery] Guid id)
+        public async Task<HttpResponseMessage> Delete([FromHeader] string accesstoken, [FromQuery] Guid id)
         {
             string connectionString = _configuration.GetConnectionString("Default")!;
 
             HttpResponseMessage httpsResponseMessage = new HttpResponseMessage();
             try
             {
-                new Ticket().DeleteTicket(id, accesstoken, connectionString);
-                httpsResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+                var result = await new Ticket().DeleteTicket(id, accesstoken, connectionString);
+                if(result == 1)
+                {
+                    httpsResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+                }
+                else
+                {
+                    httpsResponseMessage.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                }
             }
             catch (Exception err)
             {

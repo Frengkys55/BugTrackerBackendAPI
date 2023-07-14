@@ -34,7 +34,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
 
             try
             {
-                int result = com.ExecuteNonQuery();
+                int result = await com.ExecuteNonQueryAsync();
                 if (result == -1)
                 {
                     throw new Exception("Fail to delete ticket");
@@ -44,7 +44,7 @@ namespace BugTrackerBackendAPI.Data.DbHelper
                     return result;
                 }
             }
-            catch (Exception)
+            catch (Exception err)
             {
                 throw;
             }

@@ -26,6 +26,7 @@ namespace BugTrackerBackendAPI.Models
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateModified { get; set; }
+        public DateTime? DateSolved { get; set; }
 
         [Required]
         public string Severity { get; set; }

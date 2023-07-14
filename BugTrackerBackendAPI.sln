@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTrackerBackendAPI", "BugTrackerBackendAPI.csproj", "{ECEAB37C-0AC3-4EA9-8E02-0BFE94F3FE3B}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SQLProject", "..\SQLProject\SQLProject.sqlproj", "{11C42CC2-12C5-4323-9FC1-D463A6C399D7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +15,6 @@ Global
 		{ECEAB37C-0AC3-4EA9-8E02-0BFE94F3FE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECEAB37C-0AC3-4EA9-8E02-0BFE94F3FE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECEAB37C-0AC3-4EA9-8E02-0BFE94F3FE3B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11C42CC2-12C5-4323-9FC1-D463A6C399D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11C42CC2-12C5-4323-9FC1-D463A6C399D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11C42CC2-12C5-4323-9FC1-D463A6C399D7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{11C42CC2-12C5-4323-9FC1-D463A6C399D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11C42CC2-12C5-4323-9FC1-D463A6C399D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11C42CC2-12C5-4323-9FC1-D463A6C399D7}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

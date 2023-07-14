@@ -5,5 +5,6 @@ namespace BugTrackerBackendAPI.Models
     public class ShortTicket : TicketMinimal
     {
         public DateTime DateCreated { get; set; }
+        public DateTime DateSolved { get; set; }
     }
 }

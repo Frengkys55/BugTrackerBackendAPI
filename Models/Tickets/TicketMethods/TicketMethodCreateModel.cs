@@ -11,10 +11,11 @@ namespace BugTrackerBackendAPI.Models
 
             Data.DbHelper.GenericWrite<Ticket> genericWrite = new Data.DbHelper.GenericWrite<Ticket>();
             List<string> ignoreProperty = new List<string>();
-            ignoreProperty.Add("Id");
-            ignoreProperty.Add("DateCreated");
-            ignoreProperty.Add("DateModified");
-            ignoreProperty.Add("Project");
+            ignoreProperty.Add(nameof(ticket.Id));
+            ignoreProperty.Add(nameof(ticket.DateCreated));
+            ignoreProperty.Add(nameof(ticket.DateModified));
+            ignoreProperty.Add(nameof(ticket.Project));
+            ignoreProperty.Add(nameof(ticket.DateSolved));
             
             List<KeyValuePair<string, string>> additionParameters = new();
             additionParameters.Add(new KeyValuePair<string, string>("ProjectGuid", projectGuid.ToString()));
