@@ -385,20 +385,26 @@ CREATE PROCEDURE EditProject
 	@Name NVARCHAR(MAX),
 	@Description NVARCHAR(MAX),
 	@IconUrl NVARCHAR(MAX),
-	@BackGroundImageUrl NVARCHAR(MAX),
+	@BackgroundImageUrl NVARCHAR(MAX),
 	@ProjectStatus NVARCHAR(255),
 	@AccessToken NVARCHAR(MAX)
 AS
 IF EXISTS (SELECT * FROM USERTOKENS WHERE USERTOKENS.Token = @AccessToken)
 BEGIN;
-	UPDATE PROJECTS SET
-		PROJECTS.Name = @Name,
-		PROJECTS.Description = @Description,
-		PROJECTS.ProjectIconUrl = @IconUrl,
-		PROJECTS.ProjectBackgroundImageUrl = @BackGroundImageUrl,
-		PROJECTS.ProjectStatusGuid = (SELECT PROJECTSTATUS.Guid FROM PROJECTSTATUS WHERE PROJECTSTATUS.Name = @ProjectStatus),
-		PROJECTS.DateModified = (SELECT GETDATE())
-	WHERE PROJECTS.Guid = @Guid;
+	BEGIN TRY
+		UPDATE PROJECTS SET
+			PROJECTS.Name = @Name,
+			PROJECTS.Description = @Description,
+			PROJECTS.ProjectIconUrl = @IconUrl,
+			PROJECTS.ProjectBackgroundImageUrl = @BackgroundImageUrl,
+			PROJECTS.ProjectStatusGuid = (SELECT PROJECTSTATUS.Guid FROM PROJECTSTATUS WHERE PROJECTSTATUS.Name = @ProjectStatus),
+			PROJECTS.DateModified = (SELECT GETDATE())
+		WHERE PROJECTS.Guid = @Guid;
+	END TRY
+	BEGIN CATCH
+		DECLARE @errMessage NVARCHAR(MAX) = ERROR_MESSAGE();
+		THROW 51000, @errMessage, 1;
+	END CATCH
 END;
 ELSE
 BEGIN;
@@ -581,16 +587,32 @@ CREATE PROCEDURE DeleteTicket
 	@Guid NVARCHAR(40),
 	@AccessToken NVARCHAR(40)
 AS
-IF EXISTS (SELECT * FROM USERTOKENS WHERE USERTOKENS.Token = @AccessToken)
-BEGIN;
-	-- Delete comments
-	IF EXISTS (SELECT * FROM TICKETCOMMENTS WHERE TICKETCOMMENTS.TicketGuid = @Guid)
-		DELETE FROM TICKETCOMMENTS WHERE TICKETCOMMENTS.TicketGuid = @Guid;
-	
-	-- Delete ticket
-	IF EXISTS (SELECT * FROM TICKETS WHERE TICKETS.Guid = @Guid)
-		DELETE FROM TICKETS WHERE TICKETS.Guid = @Guid;
-END;
+BEGIN
+	IF EXISTS(SELECT * FROM USERTOKENS WHERE USERTOKENS.Token = @AccessToken)
+	BEGIN
+		DECLARE @Result INT = 0;
+
+		-- Delete ticket
+		IF EXISTS (SELECT * FROM TICKETS WHERE TICKETS.Guid = @Guid)
+		BEGIN
+			BEGIN TRY
+				DELETE FROM TICKETS WHERE TICKETS.Guid = @Guid;
+				SET @Result = 1;
+			END TRY
+			BEGIN CATCH
+				SELECT -1 AS Result
+			END CATCH
+		END
+		
+		-- Delete comments
+		IF EXISTS (SELECT * FROM TICKETCOMMENTS WHERE TICKETCOMMENTS.TicketGuid = @Guid)
+			DELETE FROM TICKETCOMMENTS WHERE TICKETCOMMENTS.TicketGuid = @Guid;
+
+		SELECT @Result AS Result;
+	END
+	ELSE
+		THROW 51000, 'Invalid access token', 1;
+END
 GO
 
 --------------------------------------[ Add Comment ]--------------------------------------
@@ -703,6 +725,11 @@ CREATE PROCEDURE AddUserMinimal
 	@Email NVARCHAR(255)
 AS
 BEGIN;
+	IF EXISTS (SELECT USERS.Username FROM USERS WHERE USERS.Username = @Username)
+		THROW 51000, 'There is already user with this username', 1;
+	
+
+	
 	INSERT INTO USERS(
 		Guid,
 		Username,
@@ -715,7 +742,7 @@ BEGIN;
 		@Password,
 		@Email
 	)
-END;
+END; 
 GO
 
 --[ FUNCTIONS ] -----------------------------------------------------------------------------
@@ -950,7 +977,8 @@ RETURN(
 	SELECT
 		TICKETS.Guid,
 		TICKETS.Name,
-		TICKETS.DateCreated
+		TICKETS.DateCreated,
+		TICKETS.DateSolved
 	FROM TICKETS
 	WHERE TICKETS.UserGuid = (SELECT USERTOKENS.UserGuid FROM USERTOKENS WHERE USERTOKENS.Token = @accesstoken)
 )
@@ -1161,6 +1189,7 @@ RETURN(
 		TICKETS.Description,
 		TICKETS.DateCreated,
 		TICKETS.DateModified,
+		TICKETS.DateSolved,
 		TICKETSEVERITIES.Title Severity,
 		TICKETTYPE.Name Type
 	FROM TICKETS

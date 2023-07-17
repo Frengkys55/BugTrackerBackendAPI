@@ -32,11 +32,19 @@
             };
 
             Data.DbHelper.DbWriter writer = new Data.DbHelper.DbWriter();
-            var result = await writer.WriteUsingProcedureGeneric(connectionString, query, user, ignoreProperties);
-            if(result > 0)
-                return true;
-            else
-                return false;
+            try
+            {
+                var result = await writer.WriteUsingProcedureGeneric(connectionString, query, user, ignoreProperties);
+                if (result > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }
